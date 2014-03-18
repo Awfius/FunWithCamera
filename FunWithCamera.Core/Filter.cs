@@ -1,0 +1,65 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace FunWithCamera.Core
+{
+	public enum Filter
+	{
+		None = 0,
+
+		Antique,
+		AutoEnhance,
+		AutoLevels,
+		//Blend,
+		Blur,
+		Brightness,
+		Cartoon,
+		ChromaKey,
+		ColorAdjust,
+		ColorBoost,
+		Colorization,
+		ColorSwap,
+		Contrast,
+		Crop,
+		Curves,
+		Despeckle,
+		Emboss,
+		Exposure,
+		Flip,
+		Foundation,
+		Grayscale,
+		GrayscaleNegative,
+		HueSaturation,
+		//ImageFusion,
+		//Levels,
+		//LocalBoost,
+		Lomo,
+		MagicPen,
+		Milky,
+		Mirror,
+		MonoColor,
+		Moonlight,
+		Negative,
+		Noise,
+		Oily,
+		Paint,
+		Posterize,
+		Reframing,
+		Rotation,
+		Sepia,
+		Sharpness,
+		Sketch,
+		Solarize,
+		//SplitTone,
+		Spotlight,
+		Stamp,
+		TemperatureAndTint,
+		Vignetting,
+		Warp,
+		Watercolor,
+		WhiteBalance,
+		WhiteboardEnhancement,
+	}
+}
