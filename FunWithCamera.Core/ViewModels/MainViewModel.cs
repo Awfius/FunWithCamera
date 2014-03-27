@@ -98,6 +98,10 @@ namespace FunWithCamera.Core.ViewModels
 
 		private FilterViewModel _selectedFilter;
 
+		private int _captureCountdown = 3;
+
+		private int _captureCountdownOpacity = 0;
+
 		#endregion
 
 		#region Public Properties
@@ -121,6 +125,36 @@ namespace FunWithCamera.Core.ViewModels
 			}
 		}
 
+		public int CaptureCountdown
+		{
+			get { return _captureCountdown; }
+			set
+			{
+				if (_captureCountdown == value)
+				{
+					return;
+				}
+
+				_captureCountdown = value;
+				NotifyPropertyChanged("CaptureCountdown");
+			}
+		}
+
+		public int CaptureCountdownOpacity
+		{
+			get { return _captureCountdownOpacity; }
+			set
+			{
+				if (_captureCountdownOpacity == value)
+				{
+					return;
+				}
+
+				_captureCountdownOpacity = value;
+				NotifyPropertyChanged("CaptureCountdownOpacity");
+			}
+		}
+
 		#endregion
 
 		#region Constructors
@@ -138,27 +172,6 @@ namespace FunWithCamera.Core.ViewModels
 		{
 			var filters = await TaskEx.Run(() =>
 			{
-				//var list = new List<FilterViewModel>
-				//{
-				//	new FilterViewModel(Filter.None),
-				//	new FilterViewModel(Filter.Antique),
-				//	new FilterViewModel(Filter.AutoEnhance),
-				//	new FilterViewModel(Filter.AutoLevels),
-				//	new FilterViewModel(Filter.Blend),
-				//	new FilterViewModel(Filter.Blur),
-				//	new FilterViewModel(Filter.Brightness),
-				//	new FilterViewModel(Filter.Cartoon),
-				//	new FilterViewModel(Filter.ChromaKey),
-				//	new FilterViewModel(Filter.Cartoon),
-				//	new FilterViewModel(Filter.Grayscale),
-				//	new FilterViewModel(Filter.Negative),
-				//	new FilterViewModel(Filter.Antique),
-				//	new FilterViewModel(Filter.Paint),
-				//	new FilterViewModel(Filter.Sepia),
-				//	new FilterViewModel(Filter.Sketch),
-				//	new FilterViewModel(Filter.Warp)
-				//};
-
 				var list = new List<FilterViewModel>();
 				foreach (var filter in typeof(Filter).GetFields())
 				{

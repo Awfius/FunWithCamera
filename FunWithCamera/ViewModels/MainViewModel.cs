@@ -18,7 +18,6 @@ namespace FunWithCamera.ViewModels
 
 		#endregion
 
-
 		#region Public Properties
 
 		public ReadOnlyObservableCollection<VideoBrush> Cameras { get; private set; }

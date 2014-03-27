@@ -24,7 +24,8 @@
 											IconUri="Assets/Icons/camera.png"
 											Text="Shoot" />
 			<shell:ApplicationBar.MenuItems>
-				<shell:ApplicationBarMenuItem Text="About" />
+				<shell:ApplicationBarMenuItem Text="About"
+											  Click="About_Click" />
 			</shell:ApplicationBar.MenuItems>
 		</shell:ApplicationBar>
 	</phone:PhoneApplicationPage.ApplicationBar>
@@ -33,60 +34,168 @@
 		<Local:FilterConverter x:Key="FilterConverter" />
 	</Control.Resources>
 
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition />
-			<RowDefinition Height="Auto" />
-		</Grid.RowDefinitions>
+	<Grid x:Name="LayoutRoot">
+		<Grid>
+			<Grid.Background>
+				<LinearGradientBrush EndPoint="0.5,1"
+									 MappingMode="RelativeToBoundingBox"
+									 StartPoint="0.5,0">
+					<GradientStop Color="Black"
+								  Offset="0.6" />
+					<GradientStop Color="#FFA20808"
+								  Offset="0.9" />
+					<GradientStop Color="#FF360202"
+								  Offset="1" />
+				</LinearGradientBrush>
+			</Grid.Background>
+			<Grid.RowDefinitions>
+				<RowDefinition />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
 
-		<Grid x:Name="_Viewport" />
+			<Grid x:Name="_Viewport" />
 
-		<Canvas x:Name="_CameraView"
-				RenderTransformOrigin=".5,.5"
-				Background="{Binding SelectedFilter.Filter, Converter={StaticResource FilterConverter}}">
-			<FrameworkElement.RenderTransform>
-				<CompositeTransform Rotation="-90" />
-			</FrameworkElement.RenderTransform>
-		</Canvas>
+			<Grid>
+				<Canvas x:Name="_CameraView"
+						RenderTransformOrigin=".5,.5"
+						Background="{Binding SelectedFilter.Filter, Converter={StaticResource FilterConverter}}">
+					<FrameworkElement.RenderTransform>
+						<CompositeTransform Rotation="-90" />
+					</FrameworkElement.RenderTransform>
+				</Canvas>
+				<TextBlock x:Name="_CameraTimer"
+						   FontSize="288"
+						   HorizontalAlignment="Center"
+						   VerticalAlignment="Center"
+						   Foreground="#04AEDA"
+						   Text="{Binding CaptureCountdown}"
+						   Opacity="{Binding CaptureCountdownOpacity}" />
+			</Grid>
 
-		<ListBox ItemsSource="{Binding Filters, Mode=OneTime}"
-				 SelectedValue="{Binding SelectedFilter, Mode=TwoWay}"
-				 Grid.Row="1"
-				 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-				 ScrollViewer.HorizontalScrollBarVisibility="Auto">
-			<ListBox.ItemsPanel>
-				<ItemsPanelTemplate>
-					<StackPanel Orientation="Horizontal"
-								Margin="24,12,12,12" />
-				</ItemsPanelTemplate>
-			</ListBox.ItemsPanel>
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<Border CornerRadius="3"
-							Background="#BCC6CC"
-							Padding="10"
-							Margin="0,0,12,0">
-						<!--<TextBlock Text="{Binding Name, Mode=OneTime}"
-								   VerticalAlignment="Center"
-								   HorizontalAlignment="Center" />-->
-						<!--<Canvas x:Name="_FilterView"
-								RenderTransformOrigin=".5,.5"
-								Height="160"
-								Width="120"
-								MinHeight="160"
-								MinWidth="120"
-								HorizontalAlignment="Center"
-								VerticalAlignment="Center"
-								Background="{Binding Filter, Converter={StaticResource FilterConverter}}">
-						</Canvas>-->
-						<Controls:FilteredImageControl Height="160"
-													   Width="160"
-													   FilteredImage="{Binding Filter}" />
-					</Border>
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
+			<ListBox ItemsSource="{Binding Filters, Mode=OneTime}"
+					 SelectedValue="{Binding SelectedFilter, Mode=TwoWay}"
+					 Grid.Row="1"
+					 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+					 ScrollViewer.HorizontalScrollBarVisibility="Auto">
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Orientation="Horizontal"
+									Background="Red"
+									Margin="24,12,12,12" />
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<Border BorderThickness="1"
+								BorderBrush="Black">
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+									<RowDefinition Height="Auto" />
+								</Grid.RowDefinitions>
+
+								<StackPanel Orientation="Horizontal"
+											Margin="0,4,0,0">
+									<Rectangle Height="12"
+											   Width="8"
+											   Fill="White"
+											   Margin="8,0" />
+									<Rectangle Height="12"
+											   Width="8"
+											   Fill="White"
+											   Margin="8,0" />
+									<Rectangle Height="12"
+											   Width="8"
+											   Fill="White"
+											   Margin="8,0" />
+									<Rectangle Height="12"
+											   Width="8"
+											   Fill="White"
+											   Margin="8,0" />
+									<Rectangle Height="12"
+											   Width="8"
+											   Fill="White"
+											   Margin="8,0" />
+									<Rectangle Height="12"
+											   Width="8"
+											   Fill="White"
+											   Margin="8,0" />
+									<Rectangle Height="12"
+											   Width="8"
+											   Fill="White"
+											   Margin="8,0" />
+									<Rectangle Height="12"
+											   Width="8"
+											   Fill="White"
+											   Margin="8,0" />
+								</StackPanel>
+
+								<Border	Background="White"
+										Padding="10"
+										Margin="0,4,12,4"
+										Grid.Row="1">
+									<Controls:FilteredImageControl Height="120"
+																   Width="160"
+																   FilteredImage="{Binding Filter}" />
+								</Border>
+
+								<StackPanel Orientation="Horizontal"
+											Grid.Row="2"
+											Margin="0,0,0,4">
+									<Rectangle Height="12"
+											   Width="8"
+											   Fill="White"
+											   Margin="8,0" />
+									<Rectangle Height="12"
+											   Width="8"
+											   Fill="White"
+											   Margin="8,0" />
+									<Rectangle Height="12"
+											   Width="8"
+											   Fill="White"
+											   Margin="8,0" />
+									<Rectangle Height="12"
+											   Width="8"
+											   Fill="White"
+											   Margin="8,0" />
+									<Rectangle Height="12"
+											   Width="8"
+											   Fill="White"
+											   Margin="8,0" />
+									<Rectangle Height="12"
+											   Width="8"
+											   Fill="White"
+											   Margin="8,0" />
+									<Rectangle Height="12"
+											   Width="8"
+											   Fill="White"
+											   Margin="8,0" />
+									<Rectangle Height="12"
+											   Width="8"
+											   Fill="White"
+											   Margin="8,0" />
+								</StackPanel>
+							</Grid>
+						</Border>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+		</Grid>
+
+		<Grid>
+			<Grid.Resources>
+				<Storyboard x:Name="OverlayStoryBoards">
+					<DoubleAnimation Storyboard.TargetName="_OverlayView"
+									 Storyboard.TargetProperty="Opacity"
+									 From="0.0"
+									 To="1.0"
+									 Duration="0:0:0.20" AutoReverse="True"/>
+				</Storyboard>
+			</Grid.Resources>
+			<Rectangle x:Name="_OverlayView"
+					   Fill="White" Opacity="0" />
+		</Grid>
 	</Grid>
-
 
 </phone:PhoneApplicationPage>

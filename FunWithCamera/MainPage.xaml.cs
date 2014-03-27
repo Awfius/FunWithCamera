@@ -16,6 +16,8 @@ using System.Threading;
 using Microsoft.Xna.Framework.Media;
 using System.Windows.Media.Imaging;
 using Nokia.Graphics.Imaging;
+using System.Windows;
+using System.Windows.Threading;
 
 
 namespace FunWithCamera
@@ -55,6 +57,8 @@ namespace FunWithCamera
 
 		private static NokiaImagingSDKEffects _effect = null;
 
+		private DispatcherTimer dispatcherTimer = new DispatcherTimer();
+				
 		#endregion
 
 		#region Constructors
@@ -69,6 +73,9 @@ namespace FunWithCamera
 			DataContext = _viewModel;
 
 			Loaded += OnLoaded;
+
+			dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+			dispatcherTimer.Tick += timer_Tick;
 		}
 
 		#endregion
@@ -88,6 +95,63 @@ namespace FunWithCamera
 			_CameraView.MinWidth = _Viewport.ActualHeight;
 			_CameraView.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
 			_CameraView.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+
+			_OverlayView.Height = 0;
+			_OverlayView.Width = 0;
+		}
+
+		/// <summary>
+		/// Starts a 3 secs countdown
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void CapturePhoto_Click(object sender, EventArgs e)
+		{
+			_viewModel.CaptureCountdownOpacity = 1;
+			_viewModel.CaptureCountdown = 3;
+			dispatcherTimer.Start();
+		}
+
+		/// <summary>
+		/// Triggers a countdown and capture when finished
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void timer_Tick(object sender, EventArgs e)
+		{
+			if (_viewModel.CaptureCountdown > 1)
+			{
+				_viewModel.CaptureCountdown--;
+			}
+			else
+			{
+				_OverlayView.Height = LayoutRoot.ActualHeight;
+				_OverlayView.Width = LayoutRoot.ActualWidth;
+				OverlayStoryBoards.Completed += OverlayStoryBoards_Completed;
+				OverlayStoryBoards.Begin();
+				_viewModel.CaptureCountdownOpacity = 0;
+				_viewModel.CaptureCountdown = 3;
+				dispatcherTimer.Stop();
+				CaptureImage();
+			}
+		}
+
+		void OverlayStoryBoards_Completed(object sender, EventArgs e)
+		{
+			_OverlayView.Height = 0;
+			_OverlayView.Width = 0;
+		}
+
+
+		private void About_Click(object sender, EventArgs e)
+		{
+			//MessageBoxResult result = MessageBox.Show("Would you like to see the simple version?",
+			//							"MessageBox Example", MessageBoxButton.OKCancel);
+
+			//if (result == MessageBoxResult.OK)
+			//{
+			//	MessageBox.Show("No caption, one button.");
+			//}
 		}
 
 		/// <summary>
@@ -95,7 +159,7 @@ namespace FunWithCamera
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private async void CapturePhoto_Click(object sender, EventArgs e)
+		private async void CaptureImage()
 		{
 			var cameraCaptureSequence = Globals.Capture.CreateCaptureSequence(1);
 
@@ -105,6 +169,7 @@ namespace FunWithCamera
 			await Globals.Capture.PrepareCaptureSequenceAsync(cameraCaptureSequence);
 			await cameraCaptureSequence.StartCaptureAsync();
 
+			
 			stream.Seek(0, SeekOrigin.Begin);
 
 			var filter = _viewModel.SelectedFilter.Filter;
@@ -134,9 +199,9 @@ namespace FunWithCamera
 				using (var renderer = new WriteableBitmapRenderer(effect, imageBitmap))
 				{
 					imageBitmap = await renderer.RenderAsync();
-
+					
 					var fileStream = new MemoryStream();
-					imageBitmap.SaveJpeg(fileStream, imageBitmap.PixelWidth, imageBitmap.PixelHeight, 100, 100);
+					imageBitmap.SaveJpeg(fileStream, imageBitmap.PixelWidth, imageBitmap.PixelHeight, 0, 100);
 					fileStream.Seek(0, SeekOrigin.Begin);
 					SaveImageToLibrary(fileStream);
 				}

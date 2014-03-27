@@ -60,7 +60,7 @@ namespace FunWithCamera.CustomControls
 			base.OnApplyTemplate();
 
 			_filteredImage = (Image)GetTemplateChild("FilteredImage");
-			_filteredImageName = (TextBlock)GetTemplateChild("FilteredImageName");
+			//_filteredImageName = (TextBlock)GetTemplateChild("FilteredImageName");
 
 			var filter = FilteredImage;
 			var uri = new Uri("Assets/Images/soccerball.jpg", UriKind.Relative);
@@ -84,7 +84,7 @@ namespace FunWithCamera.CustomControls
 					_effect.FilterName = filter;
 					_effect.GetEffect();
 				}
-				_filteredImageName.Text = _effect.EffectName;
+				//_filteredImageName.Text = _effect.EffectName;
 				var filters = _effect.FilterEffect.Filters;
 
 				var imageBitmap = new WriteableBitmap(160, 120);
@@ -93,8 +93,8 @@ namespace FunWithCamera.CustomControls
 				using (var effect = new FilterEffect(source) { Filters = filters })
 				using (var renderer = new WriteableBitmapRenderer(effect, imageBitmap))
 				{
-						imageBitmap = await renderer.RenderAsync();
-						_filteredImage.Source = imageBitmap;
+					imageBitmap = await renderer.RenderAsync();
+					_filteredImage.Source = imageBitmap;
 				}
 			}
 		}

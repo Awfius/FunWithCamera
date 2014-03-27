@@ -10,10 +10,10 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="local:FilteredImageControl">
 					<Grid>
-						<TextBlock x:Name="FilteredImageName" />
 						<Image x:Name="FilteredImage"
 							   VerticalAlignment="Bottom"
-							   HorizontalAlignment="Center" />
+							   HorizontalAlignment="Center"
+							   Grid.Row="1" />
 					</Grid>
 				</ControlTemplate>
 			</Setter.Value>
